@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketZone</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f5f5;
+}
+
+/* HEADER */
+.ml-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #FFE600;
+    padding: 10px 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2D3277;
+}
+
+.search-box {
+    display: flex;
+    flex: 1;
+    max-width: 500px;
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+}
+
+.search-box button {
+    background: #3483fa;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    font-size: 16px;
+    color: #2D3277;
+    cursor: pointer;
+}
+
+/* CONTENIDO */
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* GALERÍA */
+.gallery {
+    flex: 1;
+}
+
+.main-media {
+    width: 100%;
+    height: 400px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.main-media img,
+.main-media video {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* CARRUSEL */
+.carousel-wrapper {
+    position: relative;
+    margin-top: 10px;
+}
+
+.thumbnails {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.thumbnails::-webkit-scrollbar {
+    display: none;
+}
+
+.thumbnails img,
+.thumbnails video {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+/* FLECHAS */
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.arrow.left { left: -10px; }
+.arrow.right { right: -10px; }
+
+/* INFO */
+.info {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.price {
+    font-size: 28px;
+    color: #00a650;
+    margin: 10px 0;
+}
+
+button.buy {
+    background: #3483fa;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* TABLA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+td, th {
+    padding: 10px;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* REVIEWS */
+.rating {
+    font-size: 20px;
+    color: #f5b50a;
+    margin: 10px 0;
+}
+
+.review {
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+.popup.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    animation: pop 0.4s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .main-media {
+        height: 300px;
+    }
+}
+
+@media (max-width: 600px) {
+    .ml-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .actions {
+        justify-content: space-around;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="ml-header">
+    <div class="logo">MarketZone</div>
+
+    <div class="search-box">
+        <input type="text" placeholder="Search products...">
+        <button onclick="searchProduct()">🔍</button>
+    </div>
+
+    <div class="actions">
+        <span>👤 Account</span>
+        <span>🛒 Cart</span>
+    </div>
+</header>
+
+<div class="container">
+
+<div class="gallery">
+    <div class="main-media" id="mainMedia">
+        <img src="IMG_20260515_172305.jpg">
+    </div>
+
+    <div class="carousel-wrapper">
+        <button class="arrow left" onclick="scrollCarousel(-100)">◀</button>
+
+        <div class="thumbnails" id="carousel">
+            <img src="IMG_20260515_172305.jpg" onclick="showMedia(this.src, 'img')">
+            <img src="IMG_20260324_185020.jpg" onclick="showMedia(this.src, 'img')">
+
+            <video src="VID_20251216_142838 (1).mp4" poster="IMG_20260515_172305.jpg" onclick="showMedia(this.src, 'video')"></video>
+
+            <video src="VID_20260517_234410.mp4" poster="IMG_20260324_185020.jpg" onclick="showMedia(this.src, 'video')"></video>
+        </div>
+
+        <button class="arrow right" onclick="scrollCarousel(100)">▶</button>
+    </div>
+</div>
+
+<div class="info">
+    <h2>Karol – Premium Human Model</h2>
+    <p style="color:#00a650; font-weight:bold;">⭐⭐⭐⭐⭐ Top Rated Profile</p>
+
+    <p class="price">$999 USD</p>
+
+    <p>
+    Meet Karol — a highly intelligent, adaptable, and charismatic individual designed for excellence. 
+    She stands out for her creativity, strong communication skills, and remarkable problem-solving abilities. 
+    Karol is efficient, reliable, and consistently delivers outstanding results under pressure. 
+    With a vibrant personality and a positive mindset, she enhances any environment she is part of. 
+    She is also deeply caring and loving with animals, showing kindness and compassion at all times. 
+    Additionally, Karol is a loyal and supportive friend, always present when others need her. 
+    If you are looking for someone proactive, organized, compassionate, and inspiring, Karol is the perfect choice.
+    </p>
+
+    <h3 style="margin-top:20px;">Product Features</h3>
+
+    <table>
+        <tr><th>Feature</th><th>Details</th></tr>
+        <tr><td>Model</td><td>Karol Premium Edition</td></tr>
+        <tr><td>Personality</td><td>Charismatic, friendly, confident</td></tr>
+        <tr><td>Skills</td><td>Problem-solving, communication, teamwork</td></tr>
+        <tr><td>Performance</td><td>Highly efficient</td></tr>
+        <tr><td>Adaptability</td><td>Flexible and fast learner</td></tr>
+        <tr><td>Energy</td><td>Vibrant and motivated</td></tr>
+        <tr><td>Reliability</td><td>Trustworthy</td></tr>
+        <tr><td>Animal Care</td><td>Loving and caring with animals</td></tr>
+        <tr><td>Friendship</td><td>Loyal and supportive</td></tr>
+    </table>
+
+    <h3 style="margin-top:20px;">Customer Reviews</h3>
+
+    <div class="rating">⭐⭐⭐⭐⭐ (5.0 average)</div>
+
+    <div class="review">
+        <strong>Brenda</strong>
+        <p>⭐⭐⭐⭐⭐ Karol is amazing! She is very kind and always helps others.</p>
+    </div>
+
+    <div class="review">
+        <strong>Dayana</strong>
+        <p>⭐⭐⭐⭐⭐ Excellent personality and very responsible.</p>
+    </div>
+
+    <div class="review">
+        <strong>Andy</strong>
+        <p>⭐⭐⭐⭐⭐ She is very loving with animals and a great friend.</p>
+    </div>
+
+    <button class="buy" onclick="showPopup()">Buy Now</button>
+</div>
+
+</div>
+
+<div id="popup" class="popup">
+    <div class="popup-content">
+        <h2>✔ Added to cart!</h2>
+        <p>Karol has been successfully selected.</p>
+        <button onclick="closePopup()">Continue</button>
+    </div>
+</div>
+
+<script>
+function showMedia(src, type) {
+    const container = document.getElementById("mainMedia");
+
+    if (type === 'img') {
+        container.innerHTML = `<img src="${src}">`;
+    } else {
+        container.innerHTML = `<video src="${src}" controls autoplay></video>`;
+    }
+}
+
+function scrollCarousel(amount) {
+    document.getElementById("carousel").scrollLeft += amount;
+}
+
+function showPopup() {
+    document.getElementById("popup").classList.add("active");
+}
+
+function closePopup() {
+    document.getElementById("popup").classList.remove("active");
+}
+
+function searchProduct() {
+    let value = document.querySelector(".search-box input").value;
+
+    if (value.trim() === "") {
+        alert("Please enter a product name");
+    } else {
+        alert("Searching for: " + value);
+    }
+}
+</script>
+
+</body>
+</html>
